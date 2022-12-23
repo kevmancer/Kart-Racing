@@ -280,6 +280,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 426006823, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 426006824, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 426006824, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 426006824, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.000000016776234
@@ -303,6 +319,10 @@ PrefabInstance:
     - target: {fileID: 382276456495933710, guid: 89849e68088c73c469803b7803cdf456, type: 3}
       propertyPath: minPitch
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 382276456495933710, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: pitchModifier
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 382276456495933710, guid: 89849e68088c73c469803b7803cdf456, type: 3}
       propertyPath: startingPitch
@@ -379,7 +399,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 91a9aa49a5498f64c84413332e6dabf0, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.68
+  m_Volume: 0.273
   m_Pitch: 0
   Loop: 1
   Mute: 0

@@ -13,6 +13,8 @@ public class OpenAIKartScript : MonoBehaviour
     public float turnSpeed = 10.0f;
     public float distToGround = 1f;
     public float driftForce = 10f;
+
+    public float pitchModifier;
     
     public ParticleSystem rightWheelDriftFX;
     public ParticleSystem leftWheelDriftFX;
@@ -146,8 +148,20 @@ public class OpenAIKartScript : MonoBehaviour
     void ChangeEnginePitch()
     {
         float rbSpeed = rb.velocity.magnitude;
-        float pitch = Mathf.Lerp(minPitch, maxPitch, rbSpeed / 10f);
-        kartSound.pitch = pitch;
+        float soundPitch = 1f;
+
+        // if(rbSpeed > 10f)
+        // {
+        //     soundPitch = 1.5f;
+        // }
+
+        if(rbSpeed > 15f)
+        {
+            soundPitch = 1.2f;
+        }
+
+        kartSound.pitch = (rbSpeed  / soundPitch) * pitchModifier + 0.6f;
+
     }
 
     //Resets Interia Tensor to help with stuttering and Jank movement with physics
