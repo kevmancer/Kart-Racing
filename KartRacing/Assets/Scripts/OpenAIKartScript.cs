@@ -13,8 +13,19 @@ public class OpenAIKartScript : MonoBehaviour
     public float turnSpeed = 10.0f;
     public float distToGround = 1f;
     public float driftForce = 10f;
+    
+    public ParticleSystem rightWheelDriftFX;
+    public ParticleSystem leftWheelDriftFX;
+    public ParticleSystem exhaustFX;
+
+    public AudioClip mainEngineSound;
+    public float minPitch = 1f;
+    public float maxPitch = 2.5f;
+
     public Rigidbody rb;
     public LayerMask ground;
+
+    AudioSource kartSound;
 
     public bool isTurning;
     private bool isGrounded;
@@ -24,7 +35,10 @@ public class OpenAIKartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        rightWheelDriftFX.Stop();
+        leftWheelDriftFX.Stop();
+
+        kartSound = GetComponent<AudioSource>();
     }
 
     void Update() 
@@ -35,6 +49,7 @@ public class OpenAIKartScript : MonoBehaviour
         IsGrounded();
         DriftController();
         TurnAnimation();
+        ChangeEnginePitch();
     }
 
     // Update is called once per frame
@@ -73,10 +88,11 @@ public class OpenAIKartScript : MonoBehaviour
 
             //Play Forward Wheel animation
             anim.SetBool("isDriving", true);
+
         }
         else if (forwardInput < 0 && rb.velocity.magnitude < reverseSpeed)
         {
-            // Move forward
+            // Move Backward
             rb.AddForce(transform.forward * acceleration * -1);
 
             // Limit the speed of the rigid body
@@ -90,13 +106,16 @@ public class OpenAIKartScript : MonoBehaviour
 
     void TurnHandler()
     {
+        //Initializes turnInput with Input from horizontal input
         float turnInput = getHorizontalInput;
 
+        //Rotates Rigid body when the speed is greater than 0
         if(rb.velocity.magnitude > 0)
         {
             transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
         } 
 
+        //Sets isTurning bool to true when horizontal input is applied
         if(turnInput > 0 || turnInput < 0)
         {
             isTurning = true;
@@ -106,6 +125,8 @@ public class OpenAIKartScript : MonoBehaviour
         
     }
 
+    //Animates the front wheels of the kart  to turn in direction the kart is rotating 
+    //based on the Horizontal Input
     void TurnAnimation()
     {
         if(getHorizontalInput > 0)
@@ -122,17 +143,28 @@ public class OpenAIKartScript : MonoBehaviour
         }
     }
 
+    void ChangeEnginePitch()
+    {
+        float rbSpeed = rb.velocity.magnitude;
+        float pitch = Mathf.Lerp(minPitch, maxPitch, rbSpeed / 10f);
+        kartSound.pitch = pitch;
+    }
+
+    //Resets Interia Tensor to help with stuttering and Jank movement with physics
     void ResetInertiaTenors()
     {
         rb.inertiaTensor = Vector3.zero;
         rb.inertiaTensorRotation = Quaternion.identity;
     }
 
+    //Sets the gravity of the world
+    //Might cause some bugs later on in development FYI
     void GravityMod()
     {
         Physics.gravity = new Vector3(0, -50, 0);
     }
 
+    //Uses a raycast to detect the normal of the ground and rotates the Kart mesh to match the Ground normal
     void GroundNormalHandler()
     {
     RaycastHit hit;
@@ -147,21 +179,34 @@ public class OpenAIKartScript : MonoBehaviour
         Debug.Log(isGrounded);
     }
 
+    //Drifts the Kart when Spacebar or other input is pressed. 
+    //Drift is applied by adding a sideways force to the rigidbody.
+    //Make a variable for drag to make it more usable 
     void DriftController()
     {
         float turnInput = getHorizontalInput;
 
         if(isTurning == true && rb.velocity.magnitude > 20f && isGrounded == true)
         {
-             if(Input.GetKey(KeyCode.Space))
+            if(Input.GetKey(KeyCode.Space))
             {
             rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
             rb.drag = .8f;
             isDrifting = true;
-            } else{
+
+            rightWheelDriftFX.Play();
+            leftWheelDriftFX.Play();
+
+            } 
+            else
+            {
                 rb.drag = 1.5f;
                 isDrifting = false;
             }
+        } else
+        {
+            rightWheelDriftFX.Stop();
+            leftWheelDriftFX.Stop();
         }
        
     }
