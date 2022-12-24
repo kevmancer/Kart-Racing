@@ -1,3 +1,4 @@
+using System.Net;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,23 +21,26 @@ public class OpenAIKartScript : MonoBehaviour
     public ParticleSystem leftWheelDriftFX;
     public ParticleSystem exhaustFX;
 
-    public AudioClip mainEngineSound;
-    public float minPitch = 1f;
-    public float maxPitch = 2.5f;
-
     public Rigidbody rb;
     public LayerMask ground;
 
     AudioSource kartSound;
+    public AudioClip mainEngineSound;
 
     public bool isTurning;
     private bool isGrounded;
     private bool isDrifting;
 
+    float initialSpeed;
+    float initialTurnSpeed;
+
     public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
+        initialSpeed = speed;
+        initialTurnSpeed = turnSpeed;
+
         rightWheelDriftFX.Stop();
         leftWheelDriftFX.Stop();
 
@@ -49,7 +53,7 @@ public class OpenAIKartScript : MonoBehaviour
         getHorizontalInput = Input.GetAxis("Horizontal");
 
         IsGrounded();
-        DriftController();
+        // DriftController();
         TurnAnimation();
         ChangeEnginePitch();
     }
@@ -196,34 +200,59 @@ public class OpenAIKartScript : MonoBehaviour
     //Drifts the Kart when Spacebar or other input is pressed. 
     //Drift is applied by adding a sideways force to the rigidbody.
     //Make a variable for drag to make it more usable 
-    void DriftController()
-    {
-        float turnInput = getHorizontalInput;
+    // void DriftController()
+    // {
+    //     float turnInput = getHorizontalInput;
 
-        if(isTurning == true && rb.velocity.magnitude > 20f && isGrounded == true)
-        {
-            if(Input.GetKey(KeyCode.Space))
-            {
-            rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
-            rb.drag = .8f;
-            isDrifting = true;
+    //     if(isGrounded == true)
+    //     {
+    //         if(Input.GetKey(KeyCode.Space) && isTurning == true)
+    //         {
+            
+    //         // rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
+    //         rb.AddForce(transform.right * -turnInput * driftForce * Time.deltaTime);
+    //         rb.drag = .8f;
+    //         isDrifting = true;
 
-            rightWheelDriftFX.Play();
-            leftWheelDriftFX.Play();
+    //         rightWheelDriftFX.Play();
+    //         leftWheelDriftFX.Play();
 
-            } 
-            else
-            {
-                rb.drag = 1.5f;
-                isDrifting = false;
-            }
-        } else
-        {
-            rightWheelDriftFX.Stop();
-            leftWheelDriftFX.Stop();
-        }
+    //         } 
+    //         else
+    //         {
+    //             rb.drag = 1.5f;
+    //             isDrifting = false;
+    //             rightWheelDriftFX.Stop();
+    //             leftWheelDriftFX.Stop();
+    //         }
+    //     } 
        
+    // }
+    void OnCollisionEnter(Collision hit)
+    {
+        switch(hit.gameObject.tag)
+        {
+            case "Booster":
+                StartCoroutine(BoosterForce());
+                break;
+        }
     }
 
+    IEnumerator BoosterForce()
+    {
+        rb.AddForce(transform.forward * driftForce * Time.deltaTime);
+        rb.drag = .8f;
+        isDrifting = true;
 
+        rightWheelDriftFX.Play();
+        leftWheelDriftFX.Play();
+
+        yield return new WaitForSeconds(3f);
+        
+        rb.drag = 1.5f;
+        isDrifting = false;
+        rightWheelDriftFX.Stop();
+        leftWheelDriftFX.Stop();
+        
+    }
 }
