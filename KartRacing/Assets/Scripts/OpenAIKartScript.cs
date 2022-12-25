@@ -14,6 +14,7 @@ public class OpenAIKartScript : MonoBehaviour
     public float turnSpeed = 10.0f;
     public float distToGround = 1f;
     public float driftForce = 10f;
+    public float jumpForce = 30f;
 
     public float pitchModifier;
     
@@ -235,11 +236,15 @@ public class OpenAIKartScript : MonoBehaviour
             case "Booster":
                 StartCoroutine(BoosterForce());
                 break;
+            case "JumpPad":
+                StartCoroutine(JumpPad());
+                break;
         }
 
         Debug.Log("Yes");
     }
 
+    //Move script onto game objects and not the kart for more customization
     IEnumerator BoosterForce()
     {
         rb.AddForce(transform.forward * driftForce * Time.deltaTime);
@@ -256,5 +261,13 @@ public class OpenAIKartScript : MonoBehaviour
         rightWheelDriftFX.Stop();
         leftWheelDriftFX.Stop();
         
+    }
+
+    IEnumerator JumpPad()
+    {
+        rb.AddForce(transform.up * jumpForce * Time.deltaTime);
+        
+        yield return new WaitForSeconds(3f);
+
     }
 }
