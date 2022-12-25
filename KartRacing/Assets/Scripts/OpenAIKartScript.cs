@@ -194,13 +194,12 @@ public class OpenAIKartScript : MonoBehaviour
     void IsGrounded()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, distToGround + 0.1f);
-        Debug.Log(isGrounded);
     }
 
     //Drifts the Kart when Spacebar or other input is pressed. 
     //Drift is applied by adding a sideways force to the rigidbody.
-    //Make a variable for drag to make it more usable 
-    // void DriftController()
+    // //Make a variable for drag to make it more usable 
+    // private void DriftController()
     // {
     //     float turnInput = getHorizontalInput;
 
@@ -218,7 +217,7 @@ public class OpenAIKartScript : MonoBehaviour
     //         leftWheelDriftFX.Play();
 
     //         } 
-    //         else
+    //         else if(isDrifting)
     //         {
     //             rb.drag = 1.5f;
     //             isDrifting = false;
@@ -228,7 +227,8 @@ public class OpenAIKartScript : MonoBehaviour
     //     } 
        
     // }
-    void OnCollisionEnter(Collision hit)
+
+    void OnTriggerEnter(Collider hit)
     {
         switch(hit.gameObject.tag)
         {
@@ -236,6 +236,8 @@ public class OpenAIKartScript : MonoBehaviour
                 StartCoroutine(BoosterForce());
                 break;
         }
+
+        Debug.Log("Yes");
     }
 
     IEnumerator BoosterForce()
