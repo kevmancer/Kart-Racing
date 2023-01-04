@@ -16,6 +16,9 @@ public class OpenAIKartScript : MonoBehaviour
     public float driftForce = 10f;
     public float jumpForce = 30f;
 
+    public int lapNumber;
+    public int checkpointIndex;
+
     public float pitchModifier;
     
     public ParticleSystem rightWheelDriftFX;
@@ -31,6 +34,7 @@ public class OpenAIKartScript : MonoBehaviour
     public bool isTurning;
     private bool isGrounded;
     private bool isDrifting;
+    public bool isReversing;
 
     float initialSpeed;
     float initialTurnSpeed;
@@ -41,6 +45,9 @@ public class OpenAIKartScript : MonoBehaviour
     {
         initialSpeed = speed;
         initialTurnSpeed = turnSpeed;
+
+        lapNumber = 1;
+        checkpointIndex = 0;
 
         rightWheelDriftFX.Stop();
         leftWheelDriftFX.Stop();
@@ -120,7 +127,10 @@ public class OpenAIKartScript : MonoBehaviour
         if(rb.velocity.magnitude > 0)
         {
             transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
-        } 
+        } else if(getVerticalInput < 0)
+        {
+            transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
+        }
 
         //Sets isTurning bool to true when horizontal input is applied
         if(turnInput > 0 || turnInput < 0)
@@ -136,15 +146,32 @@ public class OpenAIKartScript : MonoBehaviour
     //based on the Horizontal Input
     void TurnAnimation()
     {
-        if(getHorizontalInput > 0)
+        if(getVerticalInput < 0)
+        {
+            isReversing = true;
+        } 
+        else
+        {
+            isReversing = false;
+        }
+
+        if(isReversing == false && getHorizontalInput > 0)
         {
             anim.SetFloat("SteeringAxis", 1);
         } 
-        else if(getHorizontalInput < 0)
+        else if(isReversing == false && getHorizontalInput < 0)
         {
             anim.SetFloat("SteeringAxis", -1);
         }
-        else
+        else if(isReversing == true && getHorizontalInput > 0)
+        {
+            anim.SetFloat("SteeringAxis", -1);
+        }
+        else if(isReversing == true && getHorizontalInput < 0)
+        {
+            anim.SetFloat("SteeringAxis", 1);
+        }
+        else 
         {
             anim.SetFloat("SteeringAxis", 0);
         }
@@ -241,7 +268,6 @@ public class OpenAIKartScript : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Yes");
     }
 
     //Move script onto game objects and not the kart for more customization
@@ -267,7 +293,7 @@ public class OpenAIKartScript : MonoBehaviour
     {
         rb.AddForce(transform.up * jumpForce * Time.deltaTime);
         
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0f);
 
     }
 }
