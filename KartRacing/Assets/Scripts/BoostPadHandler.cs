@@ -4,15 +4,38 @@ using UnityEngine;
 
 public class BoostPadHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] float boosterForce;
+    [SerializeField] float boostTime = 2f;
+
+    OpenAIKartScript playerKart;
+   
+    void OnTriggerEnter(Collider other)
     {
-        
+        if(other.gameObject.GetComponent<OpenAIKartScript>())
+        {
+            OpenAIKartScript player = other.gameObject.GetComponent<OpenAIKartScript>();
+            playerKart = player;
+            StartCoroutine(BoosterForce());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+        
+    IEnumerator BoosterForce()
     {
+        playerKart.rb.AddForce(transform.forward * boosterForce * Time.deltaTime);
+        playerKart.rb.drag = .8f;
+        playerKart.isDrifting = true;
+
+        playerKart.rightWheelDriftFX.Play();
+        playerKart.leftWheelDriftFX.Play();
+
+        yield return new WaitForSeconds(boostTime);
+        
+        playerKart.rb.drag = 1.5f;
+        playerKart.isDrifting = false;
+        playerKart.rightWheelDriftFX.Stop();
+        playerKart.leftWheelDriftFX.Stop();
         
     }
 }

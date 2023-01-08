@@ -33,7 +33,7 @@ public class OpenAIKartScript : MonoBehaviour
 
     public bool isTurning;
     private bool isGrounded;
-    private bool isDrifting;
+    public bool isDrifting;
     public bool isReversing;
 
     float initialSpeed;
@@ -45,6 +45,8 @@ public class OpenAIKartScript : MonoBehaviour
     {
         initialSpeed = speed;
         initialTurnSpeed = turnSpeed;
+
+        anim.speed = 2;
 
         lapNumber = 1;
         checkpointIndex = 0;
@@ -61,7 +63,7 @@ public class OpenAIKartScript : MonoBehaviour
         getHorizontalInput = Input.GetAxis("Horizontal");
 
         IsGrounded();
-        // DriftController();
+        DriftController();
         TurnAnimation();
         ChangeEnginePitch();
     }
@@ -96,6 +98,7 @@ public class OpenAIKartScript : MonoBehaviour
         {
             // Move forward
             rb.AddForce(transform.forward * acceleration);
+            // rb.AddForce(Vector3.down * acceleration);
 
             // Limit the speed of the rigid body
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, speed);
@@ -124,10 +127,7 @@ public class OpenAIKartScript : MonoBehaviour
         float turnInput = getHorizontalInput;
 
         //Rotates Rigid body when the speed is greater than 0
-        if(rb.velocity.magnitude > 0)
-        {
-            transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
-        } else if(getVerticalInput < 0)
+        if(getVerticalInput != 0 || rb.velocity.magnitude > 1f)
         {
             transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
         }
@@ -213,9 +213,9 @@ public class OpenAIKartScript : MonoBehaviour
     //Uses a raycast to detect the normal of the ground and rotates the Kart mesh to match the Ground normal
     void GroundNormalHandler()
     {
-    RaycastHit hit;
-    Physics.Raycast(transform.position, -transform.up, out hit, 1, ground);
-    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, 0.1f);
+        RaycastHit hit;
+        Physics.Raycast(transform.position, -transform.up, out hit, 1, ground);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, 0.1f);
     }
 
     //Checks ground and returns bool if grounded or not
@@ -227,73 +227,33 @@ public class OpenAIKartScript : MonoBehaviour
     //Drifts the Kart when Spacebar or other input is pressed. 
     //Drift is applied by adding a sideways force to the rigidbody.
     // //Make a variable for drag to make it more usable 
-    // private void DriftController()
-    // {
-    //     float turnInput = getHorizontalInput;
-
-    //     if(isGrounded == true)
-    //     {
-    //         if(Input.GetKey(KeyCode.Space) && isTurning == true)
-    //         {
-            
-    //         // rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
-    //         rb.AddForce(transform.right * -turnInput * driftForce * Time.deltaTime);
-    //         rb.drag = .8f;
-    //         isDrifting = true;
-
-    //         rightWheelDriftFX.Play();
-    //         leftWheelDriftFX.Play();
-
-    //         } 
-    //         else if(isDrifting)
-    //         {
-    //             rb.drag = 1.5f;
-    //             isDrifting = false;
-    //             rightWheelDriftFX.Stop();
-    //             leftWheelDriftFX.Stop();
-    //         }
-    //     } 
-       
-    // }
-
-    void OnTriggerEnter(Collider hit)
+    private void DriftController()
     {
-        switch(hit.gameObject.tag)
+        float turnInput = getHorizontalInput;
+
+        if(isGrounded == true)
         {
-            case "Booster":
-                StartCoroutine(BoosterForce());
-                break;
-            case "JumpPad":
-                StartCoroutine(JumpPad());
-                break;
-        }
+            if(Input.GetKey(KeyCode.Space) && isTurning == true)
+            {
+            
+            // rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
+            rb.AddForce(transform.right * -turnInput * driftForce * Time.deltaTime);
+            rb.drag = .8f;
+            isDrifting = true;
 
+            rightWheelDriftFX.Play();
+            leftWheelDriftFX.Play();
+
+            } 
+            else if(isDrifting)
+            {
+                rb.drag = 1.5f;
+                isDrifting = false;
+                rightWheelDriftFX.Stop();
+                leftWheelDriftFX.Stop();
+            }
+        } 
+       
     }
-
-    //Move script onto game objects and not the kart for more customization
-    IEnumerator BoosterForce()
-    {
-        rb.AddForce(transform.forward * driftForce * Time.deltaTime);
-        rb.drag = .8f;
-        isDrifting = true;
-
-        rightWheelDriftFX.Play();
-        leftWheelDriftFX.Play();
-
-        yield return new WaitForSeconds(3f);
-        
-        rb.drag = 1.5f;
-        isDrifting = false;
-        rightWheelDriftFX.Stop();
-        leftWheelDriftFX.Stop();
-        
-    }
-
-    IEnumerator JumpPad()
-    {
-        rb.AddForce(transform.up * jumpForce * Time.deltaTime);
-        
-        yield return new WaitForSeconds(0f);
-
-    }
+    
 }
