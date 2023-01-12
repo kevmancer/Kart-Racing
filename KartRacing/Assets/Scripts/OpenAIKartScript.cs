@@ -12,7 +12,6 @@ public class OpenAIKartScript : MonoBehaviour
     public float speed = 10.0f;
     public float reverseSpeed = 10f;
     public float turnSpeed = 10.0f;
-    public Transform GameObject;
     public float distToGround = 1f;
     public float driftForce = 10f;
     public float jumpForce = 30f;
@@ -64,7 +63,7 @@ public class OpenAIKartScript : MonoBehaviour
         getHorizontalInput = Input.GetAxis("Horizontal");
 
         IsGrounded();
-        // DriftController();
+        DriftController();
         TurnAnimation();
         ChangeEnginePitch();
     }
@@ -126,28 +125,12 @@ public class OpenAIKartScript : MonoBehaviour
     {
         //Initializes turnInput with Input from horizontal input
         float turnInput = getHorizontalInput;
-        float currentRotation = GameObject.eulerAngles.z;
 
         //Rotates Rigid body when the speed is greater than 0
         if(getVerticalInput != 0 || rb.velocity.magnitude > 1f)
         {
-            if(isDrifting == false)
-            {
-                transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
-            }
-            else if(isDrifting == true)
-            {
-                if(turnInput > 0)
-                {
-                    transform.Rotate(0, (turnInput - 1) * turnSpeed * Time.smoothDeltaTime, 0); 
-                }
-                else if(turnInput < 0)
-                {
-                    transform.Rotate(0, (turnInput + 1) * turnSpeed * Time.smoothDeltaTime, 0); 
-                }
-            }
-           
-        } 
+            transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
+        }
 
         //Sets isTurning bool to true when horizontal input is applied
         if(turnInput > 0 || turnInput < 0)
@@ -248,17 +231,14 @@ public class OpenAIKartScript : MonoBehaviour
     {
         float turnInput = getHorizontalInput;
 
-        if(isGrounded == true && getVerticalInput != 0 || rb.velocity.magnitude > 1f)
+        if(isGrounded == true)
         {
-            if(Input.GetKey(KeyCode.Space))
+            if(Input.GetKey(KeyCode.Space) && isTurning == true)
             {
             
             // rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
-           
-            // rb.AddForce(transform.right * turnInput * driftForce * Time.deltaTime);
-            
-            
-            // rb.drag = .8f;
+            rb.AddForce(transform.right * -turnInput * driftForce * Time.deltaTime);
+            rb.drag = .8f;
             isDrifting = true;
 
             rightWheelDriftFX.Play();
@@ -267,7 +247,7 @@ public class OpenAIKartScript : MonoBehaviour
             } 
             else if(isDrifting)
             {
-                // rb.drag = 1.5f;
+                rb.drag = 1.5f;
                 isDrifting = false;
                 rightWheelDriftFX.Stop();
                 leftWheelDriftFX.Stop();

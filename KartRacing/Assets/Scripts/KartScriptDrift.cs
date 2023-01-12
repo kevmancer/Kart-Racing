@@ -7,8 +7,8 @@ public class KartScriptDrifting : MonoBehaviour
     float getVerticalInput;
     float getHorizontalInput;
 
-    public float acceleration;
-    public float speed;
+    public float acceleration = 10.0f;
+    public float speed = 10.0f;
     public float reverseSpeed = 10f;
     public float turnSpeed = 10.0f;
     public float distToGround = 1f;
@@ -28,7 +28,7 @@ public class KartScriptDrifting : MonoBehaviour
 
     public bool isTurning;
     private bool isGrounded;
-    public bool isDrifting;
+    private bool isDrifting;
 
     public Animator anim;
     // Start is called before the first frame update
