@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426006821}
-  m_LocalRotation: {x: -0.19632816, y: 0.7898849, z: 0.40352285, w: -0.41797906}
-  m_LocalPosition: {x: -0.846, y: -0.358, z: -0.757}
+  m_LocalRotation: {x: -0.40139836, y: 0.8811136, z: 0.20063598, w: 0.14920953}
+  m_LocalPosition: {x: -0.777, y: -0.358, z: -0.947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 382276456495933746}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: -28.252, y: -471.646, z: -47.311}
+  m_LocalEulerAnglesHint: {x: -28.252, y: -546.641, z: -47.311}
 --- !u!198 &426006824
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -3927,7 +3927,7 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 0
+    enabled: 1
     mode: 0
     ratio: 1
     lifetime:
@@ -4762,6 +4762,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4837,14 +4838,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1226899843}
-  m_LocalRotation: {x: 0.44872802, y: -0.71675426, z: 0.0039575305, w: -0.53375167}
-  m_LocalPosition: {x: 0.835, y: -0.358, z: -0.757}
+  m_LocalRotation: {x: 0.39058882, y: -0.8876031, z: -0.22093633, w: -0.10386623}
+  m_LocalPosition: {x: 0.72, y: -0.358, z: -0.974}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 382276456495933746}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -28.252, y: -240.767, z: -47.311}
+  m_LocalEulerAnglesHint: {x: -28.252, y: -180.767, z: -47.311}
 --- !u!198 &1226899846
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -8739,8 +8740,8 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     ratio: 1
     lifetime:
       serializedVersion: 2
@@ -9574,6 +9575,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15318,7 +15320,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6629797300637803691, guid: c2f510f2e3c81c84593131f068c6c685, type: 3}
+  - {fileID: 2100000, guid: bb6f0538550db394da359616f9738a0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15616,7 +15618,7 @@ Transform:
   m_GameObject: {fileID: 8976287071579723404}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0.009999394, z: 0.060001954}
-  m_LocalScale: {x: 102.73185, y: 102.73185, z: 102.73185}
+  m_LocalScale: {x: 39.078674, y: 102.73185, z: 102.73185}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450653332827020}
@@ -15693,7 +15695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7118672587297654995, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 355.49
+      value: 328.9
       objectReference: {fileID: 0}
     - target: {fileID: 7118672587297654995, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15820,8 +15822,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1589734228}
     - target: {fileID: 7545310491546103619, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
+      propertyPath: jumpForce
+      value: 50000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7545310491546103619, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: turnSpeed
-      value: 100
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7545310491546103619, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: driftForce
@@ -15829,7 +15835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7545310491546103619, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: acceleration
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7545310491546103619, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: distToGround
@@ -15853,7 +15859,7 @@ PrefabInstance:
       objectReference: {fileID: 1226899846}
     - target: {fileID: 7545310491546103667, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7545310491546103677, guid: 2bd06246f5ff13a43a4c50398b9be7ad, type: 3}
       propertyPath: m_Interpolate
