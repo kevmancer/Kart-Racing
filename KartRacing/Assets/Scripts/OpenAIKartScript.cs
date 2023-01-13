@@ -12,12 +12,17 @@ public class OpenAIKartScript : MonoBehaviour
     public float speed = 10.0f;
     public float reverseSpeed = 10f;
     public float turnSpeed = 10.0f;
+    public Transform GameObject;
     public float distToGround = 1f;
     public float driftForce = 10f;
+    public float driftFriction = 0.9f;
+    public AnimationCurve driftInputCurve;
     public float jumpForce = 30f;
 
+    public float turnDirection;
     public int lapNumber;
     public int checkpointIndex;
+    int driftDirection;
 
     public float pitchModifier;
     
@@ -34,6 +39,7 @@ public class OpenAIKartScript : MonoBehaviour
     public bool isTurning;
     private bool isGrounded;
     public bool isDrifting;
+    public bool isDriftingLeft;
     public bool isReversing;
 
     float initialSpeed;
@@ -63,9 +69,9 @@ public class OpenAIKartScript : MonoBehaviour
         getHorizontalInput = Input.GetAxis("Horizontal");
 
         IsGrounded();
-        DriftController();
         TurnAnimation();
         ChangeEnginePitch();
+        TurnCache();
     }
 
     // Update is called once per frame
@@ -77,6 +83,8 @@ public class OpenAIKartScript : MonoBehaviour
         ResetInertiaTenors();
 
         UpdateDirection();
+
+        DriftController();
 
         if(isGrounded == true)
         {
@@ -125,12 +133,15 @@ public class OpenAIKartScript : MonoBehaviour
     {
         //Initializes turnInput with Input from horizontal input
         float turnInput = getHorizontalInput;
+        float currentRotation = GameObject.eulerAngles.z;
 
         //Rotates Rigid body when the speed is greater than 0
         if(getVerticalInput != 0 || rb.velocity.magnitude > 1f)
         {
+          
             transform.Rotate(0, turnInput * turnSpeed * Time.smoothDeltaTime, 0); 
-        }
+    
+        } 
 
         //Sets isTurning bool to true when horizontal input is applied
         if(turnInput > 0 || turnInput < 0)
@@ -229,16 +240,45 @@ public class OpenAIKartScript : MonoBehaviour
     // //Make a variable for drag to make it more usable 
     private void DriftController()
     {
-        float turnInput = getHorizontalInput;
+        float drift = getHorizontalInput;
 
-        if(isGrounded == true)
+        // Change the input value to be between -1 and 1
+        drift = Mathf.Clamp(drift, -1f, 1f);
+
+        // DriftDirection(drift);
+
+        // Remap the input value to be between 0 and 1
+        if(turnDirection > 0)
         {
-            if(Input.GetKey(KeyCode.Space) && isTurning == true)
+            drift = (drift + 1f) * 0.5f;
+        }
+        // drift = (drift + 1f) * 0.5f;
+
+        // Apply input curve to adjust drift sensitivity
+        drift = driftInputCurve.Evaluate(drift);
+
+        // Remap the output value to be between -1 and 1
+        if(turnDirection < 0)
+        {
+            drift = drift * 2f - 1f;
+        }
+        // drift = drift * 2f - 1f;
+        
+        if(isGrounded == true && getVerticalInput != 0 || rb.velocity.magnitude > 1f)
+        {
+            if(Input.GetKey(KeyCode.Space))
             {
-            
+        
             // rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
-            rb.AddForce(transform.right * -turnInput * driftForce * Time.deltaTime);
-            rb.drag = .8f;
+           
+            // rb.AddForce(transform.right * turnInput * driftForce * Time.deltaTime);
+            
+            Vector3 driftForceVector = transform.right * -drift * driftForce * Time.deltaTime;
+            rb.AddForce(driftForceVector);
+            
+            Vector3 oppositeForce = -rb.velocity * driftFriction;
+            rb.AddForce(oppositeForce);
+            // rb.drag = .8f;
             isDrifting = true;
 
             rightWheelDriftFX.Play();
@@ -247,13 +287,21 @@ public class OpenAIKartScript : MonoBehaviour
             } 
             else if(isDrifting)
             {
-                rb.drag = 1.5f;
+                // rb.drag = 1.5f;
                 isDrifting = false;
                 rightWheelDriftFX.Stop();
                 leftWheelDriftFX.Stop();
             }
         } 
-       
     }
+
+    void TurnCache()
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                turnDirection = getHorizontalInput;
+            }
+        }
+       
     
 }

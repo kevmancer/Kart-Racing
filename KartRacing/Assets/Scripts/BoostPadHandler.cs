@@ -25,7 +25,6 @@ public class BoostPadHandler : MonoBehaviour
     {
         playerKart.rb.AddForce(transform.forward * boosterForce * Time.deltaTime);
         playerKart.rb.drag = .8f;
-        playerKart.isDrifting = true;
 
         playerKart.rightWheelDriftFX.Play();
         playerKart.leftWheelDriftFX.Play();
@@ -33,7 +32,6 @@ public class BoostPadHandler : MonoBehaviour
         yield return new WaitForSeconds(boostTime);
         
         playerKart.rb.drag = 1.5f;
-        playerKart.isDrifting = false;
         playerKart.rightWheelDriftFX.Stop();
         playerKart.leftWheelDriftFX.Stop();
         
