@@ -17,12 +17,9 @@ public class OpenAIKartScript : MonoBehaviour
     public float driftForce = 10f;
     public float driftFriction = 0.9f;
     public AnimationCurve driftInputCurve;
-    public float jumpForce = 30f;
-
     public float turnDirection;
     public int lapNumber;
     public int checkpointIndex;
-    int driftDirection;
 
     public float pitchModifier;
     
@@ -39,7 +36,6 @@ public class OpenAIKartScript : MonoBehaviour
     public bool isTurning;
     private bool isGrounded;
     public bool isDrifting;
-    public bool isDriftingLeft;
     public bool isReversing;
 
     float initialSpeed;
@@ -240,45 +236,39 @@ public class OpenAIKartScript : MonoBehaviour
     // //Make a variable for drag to make it more usable 
     private void DriftController()
     {
-        float drift = getHorizontalInput;
+        float turnInput = getHorizontalInput;
 
         // Change the input value to be between -1 and 1
-        drift = Mathf.Clamp(drift, -1f, 1f);
-
-        // DriftDirection(drift);
+        turnInput = Mathf.Clamp(turnInput, -1f, 1f);
 
         // Remap the input value to be between 0 and 1
         if(turnDirection > 0)
         {
-            drift = (drift + 1f) * 0.5f;
+            turnInput = (turnInput + 1f) * 0.5f;
         }
-        // drift = (drift + 1f) * 0.5f;
-
+        
         // Apply input curve to adjust drift sensitivity
-        drift = driftInputCurve.Evaluate(drift);
+        turnInput = driftInputCurve.Evaluate(turnInput);
 
         // Remap the output value to be between -1 and 1
         if(turnDirection < 0)
         {
-            drift = drift * 2f - 1f;
+            turnInput = turnInput * 2f - 1f;
         }
-        // drift = drift * 2f - 1f;
+        
         
         if(isGrounded == true && getVerticalInput != 0 || rb.velocity.magnitude > 1f)
         {
             if(Input.GetKey(KeyCode.Space))
             {
-        
-            // rb.AddForce(rb.transform.TransformDirection(-turnInput * driftForce * Time.deltaTime, 0 ,0));
-           
-            // rb.AddForce(transform.right * turnInput * driftForce * Time.deltaTime);
             
-            Vector3 driftForceVector = transform.right * -drift * driftForce * Time.deltaTime;
+            //Apply drift force to the Kart
+            Vector3 driftForceVector = transform.right * -turnInput * driftForce * Time.deltaTime;
             rb.AddForce(driftForceVector);
             
+            //Apply Opposing Force with drift friction stop stop the Kart from going faster when drifting
             Vector3 oppositeForce = -rb.velocity * driftFriction;
             rb.AddForce(oppositeForce);
-            // rb.drag = .8f;
             isDrifting = true;
 
             rightWheelDriftFX.Play();
@@ -287,7 +277,6 @@ public class OpenAIKartScript : MonoBehaviour
             } 
             else if(isDrifting)
             {
-                // rb.drag = 1.5f;
                 isDrifting = false;
                 rightWheelDriftFX.Stop();
                 leftWheelDriftFX.Stop();
@@ -295,6 +284,7 @@ public class OpenAIKartScript : MonoBehaviour
         } 
     }
 
+    //Determines which direction the player is turning and holds the value when not drifting
     void TurnCache()
         {
             if(Input.GetKeyDown(KeyCode.Space))
