@@ -8,6 +8,11 @@ public class OpenAIKartScript : MonoBehaviour
     float getVerticalInput;
     float getHorizontalInput;
 
+    float driftTimer = 0f;
+    public float driftBuildUpTimer;
+    public float miniBoostForce;
+    public float miniBoostTimer;
+
     public float acceleration = 10.0f;
     public float speed = 10.0f;
     public float reverseSpeed = 10f;
@@ -25,6 +30,8 @@ public class OpenAIKartScript : MonoBehaviour
     
     public ParticleSystem rightWheelDriftFX;
     public ParticleSystem leftWheelDriftFX;
+    public ParticleSystem rightWheelDriftBoostFX;
+    public ParticleSystem leftWheelDriftBoostFX;
     public ParticleSystem exhaustFX;
 
     public Rigidbody rb;
@@ -55,6 +62,8 @@ public class OpenAIKartScript : MonoBehaviour
 
         rightWheelDriftFX.Stop();
         leftWheelDriftFX.Stop();
+        rightWheelDriftBoostFX.Stop();
+        leftWheelDriftBoostFX.Stop();
 
         kartSound = GetComponent<AudioSource>();
     }
@@ -68,6 +77,7 @@ public class OpenAIKartScript : MonoBehaviour
         TurnAnimation();
         ChangeEnginePitch();
         TurnCache();
+        DriftBuildUpTimer();
     }
 
     // Update is called once per frame
@@ -81,6 +91,8 @@ public class OpenAIKartScript : MonoBehaviour
         UpdateDirection();
 
         DriftController();
+
+        ApplyDriftMiniBoost();
 
         if(isGrounded == true)
         {
@@ -233,7 +245,7 @@ public class OpenAIKartScript : MonoBehaviour
 
     //Drifts the Kart when Spacebar or other input is pressed. 
     //Drift is applied by adding a sideways force to the rigidbody.
-    // //Make a variable for drag to make it more usable 
+    
     private void DriftController()
     {
         float turnInput = getHorizontalInput;
@@ -284,7 +296,51 @@ public class OpenAIKartScript : MonoBehaviour
         } 
     }
 
-    //Determines which direction the player is turning and holds the value when not drifting
+    // If either turn key is held down for a certain amount of time
+    //A mini boost is activated.
+    //When player exits drifting the mini boost is applied for x amount of seconds. 
+    void DriftBuildUpTimer()
+    {
+        if(isDrifting)
+        {
+            if(isTurning)
+            {
+                driftTimer += Time.deltaTime;
+            }
+            
+        } else if(!isDrifting)
+        {
+            driftTimer = 0f;
+        }
+
+        Debug.Log(driftTimer);
+    }
+
+    void ApplyDriftMiniBoost()
+    {
+        if(driftTimer >= driftBuildUpTimer && !isDrifting)
+        {
+            StartCoroutine(DriftMiniBoost());
+        }
+    }
+
+      IEnumerator DriftMiniBoost()
+    {
+        rb.AddForce(transform.forward * miniBoostForce * Time.deltaTime);
+        rb.drag = .8f;
+
+        rightWheelDriftBoostFX.Play();
+        leftWheelDriftBoostFX.Play();
+
+        yield return new WaitForSeconds(miniBoostTimer);
+        
+        rb.drag = 1.5f;
+        rightWheelDriftBoostFX.Stop();
+        leftWheelDriftBoostFX.Stop();
+        
+    }
+
+//Determines which direction the player is turning and holds the value when not drifting
     void TurnCache()
         {
             if(Input.GetKeyDown(KeyCode.Space))
