@@ -26,14 +26,14 @@ public class BoostPadHandler : MonoBehaviour
         playerKart.rb.AddForce(transform.forward * boosterForce * Time.deltaTime);
         playerKart.rb.drag = .8f;
 
-        playerKart.rightWheelDriftFX.Play();
-        playerKart.leftWheelDriftFX.Play();
+        playerKart.rightWheelDriftBoostFX.Play();
+        playerKart.leftWheelDriftBoostFX.Play();
 
         yield return new WaitForSeconds(boostTime);
         
         playerKart.rb.drag = 1.5f;
-        playerKart.rightWheelDriftFX.Stop();
-        playerKart.leftWheelDriftFX.Stop();
+        playerKart.rightWheelDriftBoostFX.Stop();
+        playerKart.leftWheelDriftBoostFX.Stop();
         
     }
 }

@@ -28,10 +28,12 @@ public class OpenAIKartScript : MonoBehaviour
 
     public float pitchModifier;
     
-    public ParticleSystem rightWheelDriftFX;
-    public ParticleSystem leftWheelDriftFX;
-    public ParticleSystem rightWheelDriftBoostFX;
-    public ParticleSystem leftWheelDriftBoostFX;
+    public ParticleSystem rightWheelDriftFX; //Regular Drift FX
+    public ParticleSystem leftWheelDriftFX; //Regular Drift FX
+    public ParticleSystem rightWheelDriftBoostFX; //Boost FX
+    public ParticleSystem leftWheelDriftBoostFX;  //Boost FX
+    public ParticleSystem rw_DriftBoostChargedFX; //Boost is charged FX
+    public ParticleSystem lw_DriftBoostChargedFX; //Boost is charged FX
     public ParticleSystem exhaustFX;
 
     public Rigidbody rb;
@@ -58,12 +60,15 @@ public class OpenAIKartScript : MonoBehaviour
         anim.speed = 2;
 
         lapNumber = 1;
+        
         checkpointIndex = 0;
 
         rightWheelDriftFX.Stop();
         leftWheelDriftFX.Stop();
         rightWheelDriftBoostFX.Stop();
         leftWheelDriftBoostFX.Stop();
+        rw_DriftBoostChargedFX.Stop();
+        lw_DriftBoostChargedFX.Stop();
 
         kartSound = GetComponent<AudioSource>();
     }
@@ -287,7 +292,7 @@ public class OpenAIKartScript : MonoBehaviour
             leftWheelDriftFX.Play();
 
             } 
-            else if(isDrifting)
+            else
             {
                 isDrifting = false;
                 rightWheelDriftFX.Stop();
@@ -316,12 +321,29 @@ public class OpenAIKartScript : MonoBehaviour
         Debug.Log(driftTimer);
     }
 
+    //if driftTimer is greater than driftBuildUpTimer than the wheel effects should change
+    //
     void ApplyDriftMiniBoost()
     {
-        if(driftTimer >= driftBuildUpTimer && !isDrifting)
+        if(driftTimer >= driftBuildUpTimer)
         {
-            StartCoroutine(DriftMiniBoost());
+            rightWheelDriftFX.Stop();
+            leftWheelDriftFX.Stop();
+
+            lw_DriftBoostChargedFX.Play();
+            rw_DriftBoostChargedFX.Play();
+
+            if(!isDrifting)
+            {
+                lw_DriftBoostChargedFX.Stop();
+                rw_DriftBoostChargedFX.Stop();
+                StartCoroutine(DriftMiniBoost());
+            }
         }
+        // if(driftTimer >= driftBuildUpTimer && !isDrifting)
+        // {
+        //     StartCoroutine(DriftMiniBoost());
+        // }
     }
 
       IEnumerator DriftMiniBoost()
