@@ -1048,97 +1048,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 258446387, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: m_Name
-      value: LeftWheelDriftFX  (No Charge)
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.000008583069
       objectReference: {fileID: 0}
-    - target: {fileID: 405767776, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: -5183339266166291113, guid: e7695c557dc664445b41f961a860a007, type: 2}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: lengthInSec
-      value: 0.05
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.3129997
       objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.1
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.6099908
       objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9750006
       objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.56078434
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.22220221
       objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 1
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0000021755695
       objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.minColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.minColor.g
-      value: 0.7882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 405767777, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.minColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925423, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: -5183339266166291113, guid: e7695c557dc664445b41f961a860a007, type: 2}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.5615012
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.minColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.minColor.g
-      value: 0.7863294
-      objectReference: {fileID: 0}
-    - target: {fileID: 545925424, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startColor.minColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1226899843, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: m_Name
-      value: RightWheelBoostFX
-      objectReference: {fileID: 0}
-    - target: {fileID: 1226899846, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2121807690, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: m_Name
-      value: 'RightWheelDriftFX  (No Charge) '
+    - target: {fileID: 382276454758119507, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.0000004917383
       objectReference: {fileID: 0}
     - target: {fileID: 382276456495933710, guid: 89849e68088c73c469803b7803cdf456, type: 3}
       propertyPath: miniBoostForce
-      value: 1000
+      value: 3000
       objectReference: {fileID: 0}
-    - target: {fileID: 883370029972238717, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: m_Name
-      value: 'LeftWheelBoostFX '
+    - target: {fileID: 382276456495933710, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: miniBoostTimer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1095173518841958046, guid: 89849e68088c73c469803b7803cdf456, type: 3}
       propertyPath: m_RootOrder
@@ -1188,10 +1132,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: BestKart Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 1546513776376359583, guid: 89849e68088c73c469803b7803cdf456, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.2
-      objectReference: {fileID: 0}
+    - target: {fileID: 3227390714703225273, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 4a0d83afff01504449ba17fbdfc98d67, type: 3}
+    - target: {fileID: 6169423866741190674, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 4a0d83afff01504449ba17fbdfc98d67, type: 3}
+    - target: {fileID: 7076275077379337366, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 4a0d83afff01504449ba17fbdfc98d67, type: 3}
+    - target: {fileID: 9126380740517650169, guid: 89849e68088c73c469803b7803cdf456, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -3846018093981099296, guid: 4a0d83afff01504449ba17fbdfc98d67, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89849e68088c73c469803b7803cdf456, type: 3}
 --- !u!1 &1858856726

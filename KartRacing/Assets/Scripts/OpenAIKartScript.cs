@@ -42,6 +42,7 @@ public class OpenAIKartScript : MonoBehaviour
     AudioSource kartSound;
     public AudioClip mainEngineSound;
 
+
     public bool isTurning;
     private bool isGrounded;
     public bool isDrifting;
