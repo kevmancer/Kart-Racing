@@ -8,6 +8,8 @@ TagManager:
   - Booster
   - JumpPad
   - SlowTerrain
+  - Track
+  - OffRoad
   layers:
   - Default
   - TransparentFX

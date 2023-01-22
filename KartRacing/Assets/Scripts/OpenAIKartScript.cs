@@ -13,8 +13,8 @@ public class OpenAIKartScript : MonoBehaviour
     public float miniBoostForce;
     public float miniBoostTimer;
 
-    public float acceleration = 10.0f;
     public float speed = 10.0f;
+    public float maxSpeed = 10.0f;
     public float reverseSpeed = 10f;
     public float turnSpeed = 10.0f;
     public Transform GameObject;
@@ -55,7 +55,7 @@ public class OpenAIKartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initialSpeed = speed;
+        initialSpeed = maxSpeed;
         initialTurnSpeed = turnSpeed;
 
         anim.speed = 2;
@@ -119,11 +119,11 @@ public class OpenAIKartScript : MonoBehaviour
         if (forwardInput > 0)
         {
             // Move forward
-            rb.AddForce(transform.forward * acceleration);
+            rb.AddForce(transform.forward * speed);
             // rb.AddForce(Vector3.down * acceleration);
 
             // Limit the speed of the rigid body
-            rb.velocity = Vector3.ClampMagnitude(rb.velocity, speed);
+            rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
 
             //Play Forward Wheel animation
             anim.SetBool("isDriving", true);
@@ -132,10 +132,10 @@ public class OpenAIKartScript : MonoBehaviour
         else if (forwardInput < 0 && rb.velocity.magnitude < reverseSpeed)
         {
             // Move Backward
-            rb.AddForce(transform.forward * acceleration * -1);
+            rb.AddForce(transform.forward * speed * -1);
 
             // Limit the speed of the rigid body
-            rb.velocity = Vector3.ClampMagnitude(rb.velocity, speed);
+            rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
         } else
         {
             anim.SetBool("isDriving", false);
@@ -319,7 +319,7 @@ public class OpenAIKartScript : MonoBehaviour
             driftTimer = 0f;
         }
 
-        Debug.Log(driftTimer);
+        // Debug.Log(driftTimer);
     }
 
     //if driftTimer is greater than driftBuildUpTimer than the wheel effects should change
